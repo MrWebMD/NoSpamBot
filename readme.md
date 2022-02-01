@@ -43,23 +43,34 @@ Array of user Ids that the bot will ignore. These users are generally good, upst
 ## Module Settings
 ### duplicates 🤖
 
-This module tags "DUPLICATE" to any message that appears more than once (as specified in settings.hjson). 
+This module tags `DUPLICATE` to any message that appears more than once (as specified in settings.hjson). 
 
-### MODULE_TAG: "DUPLICATE"
-Used internally to categorized messages by the type of spam. Messages that run through this module carry the "DUPLICATE" tag by default.
+```
+MODULE_TAG: "DUPLICATE"
+```
 
-### maxDuplicatesPerUser
+Used internally to categorized messages by the type of spam. Messages that run through this module carry the `DUPLICATE` tag by default.
+
+```
+maxDuplicatesPerUser
+```
 
 Limit of similar messages a user can send per `cache.maxAge` time before all of those messages get marked as spam.
-### maxDuplicatesFromAnywhere
+
+```
+maxDuplicatesFromAnywhere
+```
 
 No matter who sends the message, if there are this many messages within the `cache.maxAge` time period containing the same content, they will all be flagged as spam.
 
 ### mentionsEveryoneWithLinks🤖
 
-This module tags "EVERYONEWITHLINKS" to any message that mentions everyone and also contains a link. Announcement channels and staff memebers should be whitelisted for best results. Often times, new self bot users will join with no roles and immediate @ everyone with a link.
+This module tags `EVERYONEWITHLINKS` to any message that mentions everyone and also contains a link. Announcement channels and staff members should be whitelisted for best results. Often times, new self bot users will join with no roles and immediate @ everyone with a link.
 
-### MODULE_TAG: "EVERYONEWITHLINKS"
+```
+MODULE_TAG: "EVERYONEWITHLINKS"
+```
 
+Used internally to categorized messages by the type of spam. Messages that run through this module carry the `EVERYONEWITHLINKS` tag by default.
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
