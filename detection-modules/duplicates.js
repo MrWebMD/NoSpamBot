@@ -21,7 +21,7 @@ const {
 
 /**
  *
- * @param {Object} messages Array of Discord Message Objects
+ * @param {Array} messages Array of Discord Message Objects
  * @param {Object} settings Settings object as defined in settings.hjson
  * @returns {Array} An array of Discord Message objects. Except,
  * each object has a new property called "tags" (array of strings representing the types of spam)
