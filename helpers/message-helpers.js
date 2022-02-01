@@ -18,6 +18,28 @@ const getMessageDuplicatesByAuthor = (message, messages) => {
   );
 };
 
+const messagesToTable = (messages) => {
+  /**
+   * Logs out an array of processed
+   * messages as an array to the console
+   */
+
+  const msToSeconds = (ms) => Math.floor(ms / 1000);
+
+  console.log("");
+  console.table(
+    messages.map((message) => {
+      return {
+        TAGS: message.tags.join(","),
+        CONTENT: message.content.substr(0, 15) + "...",
+        ID: message.id,
+        AGE: msToSeconds(getMessageAge(message)) + "s",
+      };
+    })
+  );
+  console.log("");
+};
+
 const getMessageLinks = (message) => {
   return message.content.match(/((https?:\/\/)?[^\s.]+\.[\w][^\s]+)/g) || [];
 };
@@ -66,4 +88,5 @@ module.exports = {
   tagMessage,
   getMessageLinks,
   defangMessageLinks,
+  messagesToTable
 };
