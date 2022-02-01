@@ -6,7 +6,7 @@ const {
 /**
  * Module Overview
  *
- * Name: everyoneWithLinks
+ * Name: mentionsEveryoneWithLinks
  *
  * TAG: "EVERYONEWITHLINKS"
  *
