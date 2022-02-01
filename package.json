@@ -1,0 +1,17 @@
+{
+  "name": "discord-anti-spam",
+  "version": "1.0.0",
+  "description": "A discord bot for taking action against spam on discord community servers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dom#0107 Discord",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "dotenv": "^14.3.2",
+    "hjson": "^3.2.2",
+    "redux": "^4.1.2"
+  }
+}
