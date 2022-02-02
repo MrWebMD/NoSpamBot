@@ -10,7 +10,9 @@ const getDiscordClient = (TOKEN) => {
   return new Promise((resolve, reject) => {
 
     client.on("ready", () => {
+      
       resolve(client);
+      
     });
 
     client.login(TOKEN).catch(reject);

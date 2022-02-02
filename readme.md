@@ -27,33 +27,36 @@ node index.js
 
 ## Settings
 
-### cache.maxAge
+##### client.status 
+
+The bots discord activity status when online
+
+##### cache.maxAge
 
 Time in milliseconds that messages stay cached. The longer that time is the more messages the bot will consider for spam within a time period.
 
-### cache.whitelistedChannels
+##### cache.whitelistedChannels
 Array of channel Ids that the bot will completely ignore. This is helpful for private channels, Announcement channels, staff channels, member only channels, and bot channels. 
 
-### cache.whitelistedRoles
+##### cache.whitelistedRoles
 Array of role Ids that the bot will ignore. An example of something to use there is staff and admin roles. The bot will have to do less work.
 
-### cache.whitelistedUsers
+##### cache.whitelistedUsers
 Array of user Ids that the bot will ignore. These users are generally good, upstanding citizens who can be trusted to not spam.
 
-- - - -
 
 ## Module Settings
 ### duplicates 🤖
 
 This module tags "DUPLICATE" to any message that appears more than once (as specified in settings.hjson). 
 
-### MODULE_TAG: "DUPLICATE"
+##### MODULE_TAG: "DUPLICATE"
 Used internally to categorized messages by the type of spam. Messages that run through this module carry the "DUPLICATE" tag by default.
 
-### maxDuplicatesPerUser
+##### maxDuplicatesPerUser
 
 Limit of similar messages a user can send per `cache.maxAge` time before all of those messages get marked as spam.
-### maxDuplicatesFromAnywhere
+##### maxDuplicatesFromAnywhere
 
 No matter who sends the message, if there are this many messages within the `cache.maxAge` time period containing the same content, they will all be flagged as spam.
 
@@ -63,17 +66,17 @@ No matter who sends the message, if there are this many messages within the `cac
 
 This module tags "EVERYONEWITHLINKS" to any message that mentions everyone and also contains a link. Announcement channels and staff memebers should be whitelisted for best results. Often times, new self bot users will join with no roles and immediate @ everyone with a link.
 
-### MODULE_TAG: "EVERYONEWITHLINKS"
+##### MODULE_TAG: "EVERYONEWITHLINKS"
 
 Used internally to categorized messages by the type of spam. Messages that run through this module carry the "EVERYONEWITHLINKS" tag by default.
 
 - - - -
 
-## linkSpray 🤖
+### linkSpray 🤖
 
 Any messages that have the tag from the duplicates module that also contains a link will be considered as a link spray attack and immediately quarantined. 
 
-### MODULE_TAG: "LINKSPRAY"
+##### MODULE_TAG: "LINKSPRAY"
 
 Used internally to categorized messages by the type of spam. Messages that run through this module carry the "LINKSPRAY" tag by default.
 

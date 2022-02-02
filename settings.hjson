@@ -1,4 +1,8 @@
 {
+  "client": {
+    # The bots discord activity status when online
+    "status": "Fighting self bots"
+  },
 
   "cache": {
 

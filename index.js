@@ -29,6 +29,10 @@ const main = async (client) => {
 
   const settings = Hjson.parse(settingsFileContent);
 
+  // Set bot status
+
+  client.user.setActivity(settings.client.status, { type: "PLAYING" });
+
   /**
    * Whenever the message cache updates,
    * all of the detection modules will
@@ -41,6 +45,7 @@ const main = async (client) => {
 
   messageStore.subscribe(mitigationEngine.bind(this, messageStore, settings));
   messageStore.subscribe(storeLogger.bind(this, messageStore, settings));
+
   client.on("messageCreate", (message) => {
     messageCreateHandler(message, client, settings);
   });
