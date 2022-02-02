@@ -7,14 +7,14 @@
     # and not considered when looking for spam messages.
     # it is good to keep this time small.
 
-    "maxAge": 30000,
+    "maxAge": 60000,
 
     # List of channel ID's for the anti spam bot to ignore.
     # This is useful for log channels, admin channels,
     # or channels which are meant for bot commands
 
     "whitelistedChannels": [
-      "937660394120544256"
+      "560848218288685108" # LOCKE announcements
     ],
 
     # Admin, staff, and member role ID's can go here.
@@ -23,17 +23,15 @@
     # good citizens. The bot will ignore them.
 
     "whitelistedRoles": [
-      "561708861182967828", # member
-      "560853147367505943", # staff
-      #"937703570705383466", # spamadmin
+      "561708861182967828", # LOCKE member
+      "560853147367505943", # LOCKE staff
     ],
 
     # Good citizens that the spambot will ignore.
     # List of individual user ID's
 
     "whitelistedUsers": [
-      "283121554043437057", # loaf
-      #"328051236139958272" # dom
+      "283121554043437057", # Loaf
     ]
   },
 
@@ -59,12 +57,19 @@
 
       "maxDuplicatesFromAnywhere": 10,
     },
-    
+
+    # Any messages that have the tag from the
+    # duplicates module that also contains a link
+    # will be considered as a link spray attack.
+
+    "linkSpray": {
+      "MODULE_TAG": "LINKSPRAY"
+    },
+
     # Anyone who isn't whitelisted that decides to mention everyone with
     # a link is always bad news.
     "mentionsEveryoneWithLinks": {
       "MODULE_TAG": "EVERYONEWITHLINKS"
-    },
-
+    }
   }
 }

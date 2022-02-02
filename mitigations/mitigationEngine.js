@@ -9,6 +9,9 @@ const mitigationEngine = (messageStore, settings) => {
    * the store and give the appropriate response
    */
 
+  const { duplicates, mentionsEveryoneWithLinks, linkSpray } =
+   settings.modules;
+
   for (message of messageCache.flaggedMessages) {
     if (message.tags.includes("ARCHIVED")) {
       continue;
@@ -22,16 +25,22 @@ const mitigationEngine = (messageStore, settings) => {
      * Some examples include "DUPLICATE" and "EVERYONEWITHLINKS"
      */
 
-    const { duplicates, mentionsEveryoneWithLinks } =
-      settings.modules;
-
-    if (message.tags.includes(duplicates.MODULE_TAG)) {
-      flagMessage(message)
-    }
 
     if (message.tags.includes(mentionsEveryoneWithLinks.MODULE_TAG)) {
       quarantineMessage(message, "Mentions everyone with a link");
+      continue;
     }
+
+    if(message.tags.includes(linkSpray.MODULE_TAG)) {
+      quarantineMessage(message, "Potential link spray attack");
+      continue;
+    }
+
+    if (message.tags.includes(duplicates.MODULE_TAG)) {
+      flagMessage(message)
+      continue;
+    }
+
   }
 };
 

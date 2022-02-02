@@ -29,7 +29,7 @@ module.exports = (message, reason) => {
       iconURL: message.author.avatarURL(),
     })
     .setDescription(
-      codeFormat("For your safety this message has automatically been removed.")
+      "For your safety this message has automatically been removed."
     )
     .setThumbnail("https://i.imgur.com/dRI2bdJ_d.webp")
     .addFields(
@@ -38,7 +38,8 @@ module.exports = (message, reason) => {
       { name: "Tags", value: codeFormat(message.tags.join(", ")) },
       // { name: "\u200B", value: "\u200B" },
       { name: "Author ID", value: codeFormat(message.author.id), inline: true },
-      { name: "Message ID", value: codeFormat(message.id), inline: true }
+      { name: "Message ID", value: codeFormat(message.id), inline: true },
+      { name: "Learn more", value: "[Github](https://github.com/MrWebMD/NoSpamBot)", inline: false}
     )
     .setTimestamp()
     .setFooter({

@@ -5,8 +5,10 @@ const {
 
 const duplicatesModule = require("../../detection-modules/duplicates.js");
 
+const linkSprayModule = require('../../detection-modules/linkSpray.js');
 
 const mentionsEveryoneWithLinks = require("../../detection-modules/mentionsEveryoneWithLinks.js");
+
 
 module.exports = (state = { messages: [], flaggedMessages: [] }, action) => {
   var { messages, flaggedMessages } = state;
@@ -35,7 +37,9 @@ module.exports = (state = { messages: [], flaggedMessages: [] }, action) => {
 
     messages = duplicatesModule(messages, flaggedMessages, settings);
 
-    // messages = nitroScamModule(messages, settings);
+    // Duplicate messages containing a link get another tag
+
+    messages = linkSprayModule(messages, settings);
 
     // Any message that @'s everyone/here with a link gets flagged
 

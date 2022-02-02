@@ -1,6 +1,3 @@
-// Provide options to excludes some channels such as #bot.
-// That way people using bot commands won't be harrassed. The bot
-
 const dotenv = require("dotenv");
 const messageStore = require("./store/messageStore.js");
 const storeLogger = require('./store/storeLogger.js');

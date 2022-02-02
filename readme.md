@@ -40,6 +40,8 @@ Array of role Ids that the bot will ignore. An example of something to use there
 ### cache.whitelistedUsers
 Array of user Ids that the bot will ignore. These users are generally good, upstanding citizens who can be trusted to not spam.
 
+- - - -
+
 ## Module Settings
 ### duplicates 🤖
 
@@ -55,11 +57,25 @@ Limit of similar messages a user can send per `cache.maxAge` time before all of 
 
 No matter who sends the message, if there are this many messages within the `cache.maxAge` time period containing the same content, they will all be flagged as spam.
 
+- - - -
+
 ### mentionsEveryoneWithLinks🤖
 
 This module tags "EVERYONEWITHLINKS" to any message that mentions everyone and also contains a link. Announcement channels and staff memebers should be whitelisted for best results. Often times, new self bot users will join with no roles and immediate @ everyone with a link.
 
 ### MODULE_TAG: "EVERYONEWITHLINKS"
+
+Used internally to categorized messages by the type of spam. Messages that run through this module carry the "EVERYONEWITHLINKS" tag by default.
+
+- - - -
+
+## linkSpray 🤖
+
+Any messages that have the tag from the duplicates module that also contains a link will be considered as a link spray attack and immediately quarantined. 
+
+### MODULE_TAG: "LINKSPRAY"
+
+Used internally to categorized messages by the type of spam. Messages that run through this module carry the "LINKSPRAY" tag by default.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
