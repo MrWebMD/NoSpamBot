@@ -21,7 +21,7 @@ module.exports = (message, reason) => {
     previewText = previewText.replaceAll(link, newLink);
   }
 
-  const exampleEmbed = new MessageEmbed()
+  const quarantineEmbed = new MessageEmbed()
     .setColor("#0099ff")
     .setTitle("NoSpam quarantined this message")
     .setAuthor({
@@ -46,7 +46,7 @@ module.exports = (message, reason) => {
     });
 
   message
-    .reply({ embeds: [exampleEmbed] })
+    .reply({ embeds: [quarantineEmbed] })
     .then(() => {
       console.log("Warning has been issued");
       message

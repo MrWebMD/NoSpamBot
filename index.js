@@ -79,9 +79,9 @@ const messageCreateHandler = (message, client, settings) => {
 
   /**
    * All messages go in with no tags, and leave with an arrray of tags.
-   * For instance, message.tags might be ["PHISHING", "DUPLICATE"].
+   * For instance, message.tags might be ["EVERYONEWITHLINKS", "DUPLICATE"].
    * By the time this message gets filtered and the store updates,
-   * the spamFlagger will be able to take different actions depending
+   * the mitigation engine will be able to take different actions depending
    * on the appended tags.
    *
    */
