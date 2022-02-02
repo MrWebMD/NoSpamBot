@@ -39,7 +39,7 @@ const main = async (client) => {
    * that were flagged as spam.
    *
    * The redux store will automatically run the
-   * spam flagging function upon change.
+   * mitigation engine, and logging functionality upon change.
    */
 
   messageStore.subscribe(mitigationEngine.bind(this, messageStore, settings));
