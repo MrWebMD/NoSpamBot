@@ -43,11 +43,12 @@
 
     "duplicates": {
 
+     
+      "MODULE_TAG": "DUPLICATE"
+
       # Limit of similar messages a user can
       # send individual per maxAge time before
       # all of those messages get marked as spam.
-      "MODULE_TAG": "DUPLICATE"
-      
       "maxDuplicatesPerUser": 4,
 
       # No matter who sends the message,
