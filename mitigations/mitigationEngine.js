@@ -1,5 +1,6 @@
-const quarantineMessage = require('./quarantineMessage.js');
-const flagMessage = require('./flagMessage.js');
+const quarantineMessage = require("./quarantineMessage.js");
+const flagMessage = require("./flagMessage.js");
+const tempMute = require("./tempMute");
 
 const mitigationEngine = (messageStore, settings) => {
   const messageCache = messageStore.getState();
@@ -9,12 +10,25 @@ const mitigationEngine = (messageStore, settings) => {
    * the store and give the appropriate response
    */
 
-  const { duplicates, mentionsEveryoneWithLinks, linkSpray } =
-   settings.modules;
+  const { duplicates, mentionsEveryoneWithLinks, linkSpray } = settings.modules;
+
+  var alreadyMutedAuthors = [];
 
   for (message of messageCache.flaggedMessages) {
     if (message.tags.includes("ARCHIVED")) {
       continue;
+    }
+
+    const { id: authorId } = message.author;
+
+    // Every offending author gets a temp mute.
+    
+    if (!alreadyMutedAuthors.includes(authorId)) {
+    
+      tempMute(message, settings);
+    
+      alreadyMutedAuthors.push(authorId);
+    
     }
 
     /**
@@ -25,22 +39,20 @@ const mitigationEngine = (messageStore, settings) => {
      * Some examples include "DUPLICATE" and "EVERYONEWITHLINKS"
      */
 
-
     if (message.tags.includes(mentionsEveryoneWithLinks.MODULE_TAG)) {
       quarantineMessage(message, "Mentions everyone with a link");
       continue;
     }
 
-    if(message.tags.includes(linkSpray.MODULE_TAG)) {
+    if (message.tags.includes(linkSpray.MODULE_TAG)) {
       quarantineMessage(message, "Potential link spray attack");
       continue;
     }
 
     if (message.tags.includes(duplicates.MODULE_TAG)) {
-      flagMessage(message)
+      flagMessage(message);
       continue;
     }
-
   }
 };
 

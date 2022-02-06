@@ -3,7 +3,15 @@
     # The bots discord activity status when online
     "status": "Fighting self bots"
   },
+  "mitigations": {
+    # When NoSpam decides to mute an author, this role
+    # will be appended.
+    mutedRoleId: "939663446205693953", # replace with your muted role id
 
+    # Mute authors temporarily for 
+    # this amount of milliseconds
+    muteTime: 120000 # 2 minutes gives a potential bot nearly no chance to finish
+  },
   "cache": {
 
     # Messages older than this time (milliseconds)
