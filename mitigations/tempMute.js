@@ -8,11 +8,16 @@ const tempMute = (message, settings) => {
 
   if(roles.cache.has(mutedRoleId)) return;
 
-  const unmute = () => roles.remove(mutedRoleId);
+  const unmute = () =>
+    roles.remove(mutedRoleId).catch((err) => {
+      console.log("Could not unmute user: ", err);
+    });
 
   // Mute the author of the message
 
-  roles.add(mutedRoleId);
+  roles.add(mutedRoleId).catch((err) => {
+    console.log("Could not mute user: ", err);
+  });
 
   // Wait the timeout to unmute.
   // The self bot won't be able to 
