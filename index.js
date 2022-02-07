@@ -6,6 +6,7 @@ const mitigationEngine = require("./mitigations/mitigationEngine.js");
 const readFile = require("./helpers/read-file.js");
 const Hjson = require("hjson");
 const getDiscordClient = require("./discord-client.js");
+const loadModules = require("./loadModules.js");
 
 dotenv.config();
 
@@ -29,6 +30,10 @@ const main = async (client) => {
 
   const settings = Hjson.parse(settingsFileContent);
 
+  const detectionModules = loadModules(settings.modules);
+
+  // console.log("We have loaded these modules: ", detectionModules);
+
   // Set bot status
 
   client.user.setActivity(settings.client.status, { type: "PLAYING" });
@@ -43,15 +48,15 @@ const main = async (client) => {
    * mitigation engine, and logging functionality upon change.
    */
 
-  messageStore.subscribe(mitigationEngine.bind(this, messageStore, settings));
-  messageStore.subscribe(storeLogger.bind(this, messageStore, settings));
+  messageStore.subscribe(mitigationEngine.bind(this, messageStore, settings, detectionModules));
+  // messageStore.subscribe(storeLogger.bind(this, messageStore, settings));
 
   client.on("messageCreate", (message) => {
-    messageCreateHandler(message, client, settings);
+    messageCreateHandler(message, client, settings, detectionModules);
   });
 };
 
-const messageCreateHandler = (message, client, settings) => {
+const messageCreateHandler = (message, client, settings, detectionModules) => {
   // Ignore if message was not from a guild
 
   if (!message.guild) return;
@@ -90,7 +95,7 @@ const messageCreateHandler = (message, client, settings) => {
 
   message.tags = [];
 
-  messageStore.dispatch(cacheActions.addMessage(message, settings));
+  messageStore.dispatch(cacheActions.addMessage(message, settings, detectionModules));
 };
 
 const failedToStartHandler = (error) => {

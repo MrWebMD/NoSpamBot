@@ -3,12 +3,12 @@ const {
   tagMessage,
 } = require("../../helpers/message-helpers.js");
 
-const duplicatesModule = require("../../detection-modules/duplicates.js");
+/* const duplicatesModule = require("../../detection-modules/duplicates.js");
 
 const linkSprayModule = require('../../detection-modules/linkSpray.js');
 
 const mentionsEveryoneWithLinks = require("../../detection-modules/mentionsEveryoneWithLinks.js");
-
+ */
 
 module.exports = (state = { messages: [], flaggedMessages: [] }, action) => {
   var { messages, flaggedMessages } = state;
@@ -18,7 +18,7 @@ module.exports = (state = { messages: [], flaggedMessages: [] }, action) => {
   }
 
   if (action.type === "ADD_MESSAGE") {
-    const { settings } = action.payload;
+    const { settings, message: newMessage, detectionModules } = action.payload;
 
     /**
      * Aging the cache by filtering out messages that are older
@@ -31,19 +31,32 @@ module.exports = (state = { messages: [], flaggedMessages: [] }, action) => {
 
     // Add the newest message to the cache.
 
-    messages.push(action.payload.message);
+    messages.push(newMessage);
+
+    const sortedDetectionModules = detectionModules.sort(
+      (module1, module2) => module1.detectionOrder - module2.detectionOrder
+    );
+    for (let detectionModule of sortedDetectionModules) {
+
+      // console.log(detectionModule.name, detectionModule.detectionOrder)
+      messages = detectionModule.main(
+        messages,
+        flaggedMessages,
+        detectionModule.options
+      );
+    }
 
     // Use the duplicates module to tag duplicate messages.
 
-    messages = duplicatesModule(messages, flaggedMessages, settings);
+    //messages = duplicatesModule(messages, flaggedMessages, settings);
 
     // Duplicate messages containing a link get another tag
 
-    messages = linkSprayModule(messages, settings);
+    //messages = linkSprayModule(messages, settings);
 
     // Any message that @'s everyone/here with a link gets flagged
 
-    messages = mentionsEveryoneWithLinks(messages, settings);
+    //messages = mentionsEveryoneWithLinks(messages, settings);
 
     /**
      * Messaged marked with ARCHIVED mean that

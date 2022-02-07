@@ -47,41 +47,58 @@
     ]
   },
 
-  "modules": {
+  "modules": [
+
+     # Anyone who isn't whitelisted that decides to mention everyone with
+    # a link is always bad news.
+    {
+      name: "mentionsEveryoneWithLinks",
+      path: "./detection-modules/mentionsEveryoneWithLinks.js",
+      detectionOrder: 1,
+      mitigationOrder: 1,
+      options: {
+        tag: "EVERYONEWITHLINKS"
+      }
+    },
     
     # Looking for duplicate messages
 
-    "duplicates": {
+    {
 
-     
-      "MODULE_TAG": "DUPLICATE"
+      name: "duplicates",
+      path: "./detection-modules/duplicates.js",
+      detectionOrder: 2,
+      mitigationOrder: 3
+      options: {
+        tag: "DUPLICATE",
+        # Limit of similar messages a user can
+        # send individual per maxAge time before
+        # all of those messages get marked as spam.
+        "maxDuplicatesPerUser": 4,
 
-      # Limit of similar messages a user can
-      # send individual per maxAge time before
-      # all of those messages get marked as spam.
-      "maxDuplicatesPerUser": 4,
+        # No matter who sends the message,
+        # if there are this many messages
+        # within the maxAge time period
+        # containing the same content,
+        # they will all be flagged as spam.
 
-      # No matter who sends the message,
-      # if there are this many messages
-      # within the maxAge time period
-      # containing the same content,
-      # they will all be flagged as spam.
-
-      "maxDuplicatesFromAnywhere": 10,
+        "maxDuplicatesFromAnywhere": 10
+      }
+      
     },
 
     # Any messages that have the tag from the
     # duplicates module that also contains a link
     # will be considered as a link spray attack.
 
-    "linkSpray": {
-      "MODULE_TAG": "LINKSPRAY"
-    },
-
-    # Anyone who isn't whitelisted that decides to mention everyone with
-    # a link is always bad news.
-    "mentionsEveryoneWithLinks": {
-      "MODULE_TAG": "EVERYONEWITHLINKS"
+    {
+      name: "linkSpray",
+      path: "./detection-modules/linkSpray.js",
+      detectionOrder: 3,
+      mitigationOrder: 2,
+      options: {
+        tag: "LINKSPRAY"
+      }
     }
-  }
+  ]
 }

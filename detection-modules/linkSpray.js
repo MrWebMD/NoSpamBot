@@ -2,6 +2,7 @@ const {
   tagMessage,
   getMessageLinks,
 } = require("../helpers/message-helpers.js");
+const quarantineMessage = require("../mitigations/quarantineMessage.js");
 
 /**
  * Module Overview
@@ -26,8 +27,8 @@ const {
  * Example of message.tags:  ["DUPLICATE", "LINKSPRAY"]
  */
 
-module.exports = (messages, settings) => {
-  const { MODULE_TAG } = settings.modules.linkSpray;
+module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
+  const { tag: MODULE_TAG } = moduleOptions;
 
   // No one should be spamming links. What good things might they
   // be up to?
@@ -43,7 +44,7 @@ module.exports = (messages, settings) => {
 
     /* Has the duplicate tag */
 
-    if (!message.tags.includes(settings.modules.duplicates.MODULE_TAG))
+    if (!message.tags.includes("DUPLICATE"))
       return message;
 
     tagMessage(message, MODULE_TAG);
@@ -51,3 +52,8 @@ module.exports = (messages, settings) => {
     return message;
   });
 };
+
+module.exports.mitigation = (message) => {
+  console.log("Link spray mitigation");
+  quarantineMessage(message, "Potential link spray attack");
+}

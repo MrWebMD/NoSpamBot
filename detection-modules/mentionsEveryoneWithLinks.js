@@ -2,6 +2,8 @@ const {
   tagMessage,
   getMessageLinks,
 } = require("../helpers/message-helpers.js");
+const deleteMessage = require("../mitigations/deleteMessage.js");
+const quarantineMessage = require("../mitigations/quarantineMessage.js");
 
 /**
  * Module Overview
@@ -25,8 +27,8 @@ const {
  * Example of message.tags:  ["DUPLICATE", "EVERYONEWITHLINKS"]
  */
 
-module.exports = (messages, settings) => {
-  const { MODULE_TAG } = settings.modules.mentionsEveryoneWithLinks;
+module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
+  const { tag: MODULE_TAG } = moduleOptions;
 
   // mentions here
   // has a link
@@ -52,3 +54,9 @@ module.exports = (messages, settings) => {
     return message;
   });
 };
+
+module.exports.mitigation = (message) => {
+  console.log("Mentions everyone with links mitigation");
+  // quarantineMessage(message, "Mentions everyone with a link");
+  deleteMessage(message);
+}

@@ -3,6 +3,7 @@ const {
   getMessageDuplicatesByAuthor,
   tagMessage,
 } = require("../helpers/message-helpers.js");
+const flagMessage = require("../mitigations/flagMessage.js");
 
 /**
  * Module Overview
@@ -29,9 +30,12 @@ const {
  * Example of message.tags:  ["DUPLICATE", "NITROSCAM"]
  */
 
-module.exports = (messages, previouslyFlaggedMessages, settings) => {
-  const { maxDuplicatesPerUser, maxDuplicatesFromAnywhere, MODULE_TAG } =
-    settings.modules.duplicates;
+module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
+  const {
+    maxDuplicatesPerUser,
+    maxDuplicatesFromAnywhere,
+    tag: MODULE_TAG,
+  } = moduleOptions;
 
   // Array of discord message ID's
 
@@ -62,7 +66,7 @@ module.exports = (messages, previouslyFlaggedMessages, settings) => {
 
     // Message matches a previously flagged message in the cache.
 
-    if(getMessageDuplicates(message, previouslyFlaggedMessages).length !== 0) {
+    if (getMessageDuplicates(message, previouslyFlaggedMessages).length !== 0) {
       tagMessage(message, MODULE_TAG);
     }
 
@@ -72,7 +76,10 @@ module.exports = (messages, previouslyFlaggedMessages, settings) => {
      * flagged messages, then add it.
      */
 
-    var similarMessagesByAuthor = getMessageDuplicatesByAuthor(message, messages);
+    var similarMessagesByAuthor = getMessageDuplicatesByAuthor(
+      message,
+      messages
+    );
 
     if (similarMessagesByAuthor.length >= maxDuplicatesPerUser) {
       tagMessage(message, MODULE_TAG);
@@ -85,4 +92,9 @@ module.exports = (messages, previouslyFlaggedMessages, settings) => {
     }
     return message;
   });
+};
+
+module.exports.mitigation = (message) => {
+  console.log("Duplicates mitigation");
+  flagMessage(message);
 };
