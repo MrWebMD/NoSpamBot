@@ -55,8 +55,13 @@ module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
   });
 };
 
-module.exports.mitigation = (message) => {
-  console.log("Mentions everyone with links mitigation");
+module.exports.mitigation = (messages, settings) => {
+
+  console.log("mention me if i'm cool")
+  for (let message of messages) {
+    console.log("Mentions everyone with links mitigation");
+    deleteMessage(message, "For your safety this message has automatically been removed by the creator.");
+    // quarantineMessage(message, "For your safety this message has automatically been removed.", "Message embed creator");
+  }
   // quarantineMessage(message, "Mentions everyone with a link");
-  deleteMessage(message);
-}
+};

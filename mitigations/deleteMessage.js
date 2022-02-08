@@ -1,24 +1,10 @@
-const { MessageEmbed } = require("discord.js");
-
+const deleteEmbedCreator = require('../embeds/delete.js');
 module.exports = (message, reason) => {
-
-  const quarantineEmbed = new MessageEmbed()
-    .setColor("#0099ff")
-    .setAuthor({
-      name: message.author.username + "#" + message.author.discriminator,
-      iconURL: message.author.avatarURL(),
-    })
-    .setDescription(
-      "For your safety this message has automatically been removed."
-    )
-    .setThumbnail("https://i.imgur.com/pJlbnwm.png")
-    .setTimestamp()
-    .setFooter({
-      text: "Made with ❤️ by Dom#0107",
-    });
+  
+  const deleteEmbed = deleteEmbedCreator(message, reason);
 
   message
-    .reply({ embeds: [quarantineEmbed] })
+    .reply({ embeds: [deleteEmbed] })
     .then(() => {
       console.log("Warning has been issued");
       message

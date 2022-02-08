@@ -8,49 +8,33 @@ const mitigationEngine = (messageStore, settings, detectionModules) => {
    * the store and give the appropriate response
    */
 
-  var alreadyMutedAuthors = [];
+  var messagesAddressed = [];
 
-  var flaggedMessages = [];
+  const sortedDetectionModules = detectionModules.sort(
+    (module1, module2) => module1.mitigationOrder - module2.mitigationOrder
+  );
 
-  for (message of messageCache.flaggedMessages) {
-    if (message.tags.includes("ARCHIVED")) {
-      continue;
-    }
+  /**
+   * Every message in this array of discord message objects
+   * now has a new property named "tags". It is an array
+   * of strings containing single word descriptions from
+   * the module that detected it.
+   * Some examples include "DUPLICATE" and "EVERYONEWITHLINKS"
+   */
 
-    const { id: authorId } = message.author;
-
-    // Every offending author gets a temp mute.
-    
-    if (!alreadyMutedAuthors.includes(authorId)) {
-    
-      tempMute(message, settings);
-    
-      alreadyMutedAuthors.push(authorId);
-    
-    }
-
-    /**
-     * Every message in this array of discord message objects
-     * now has a new property named "tags". It is an array
-     * of strings containing single word descriptions from
-     * the module that detected it.
-     * Some examples include "DUPLICATE" and "EVERYONEWITHLINKS"
-     */
-
-     const sortedDetectionModules = detectionModules.sort(
-      (module1, module2) => module1.mitigationOrder - module2.mitigationOrder
+  for (let detectionModule of sortedDetectionModules) {
+    var moduleTaggedMessages = messageCache.flaggedMessages.filter(
+      (message) =>
+        message.tags.includes(detectionModule.options.tag) &&
+        !messagesAddressed.includes(message.id) &&
+        !message.tags.includes("ARCHIVED")
     );
 
-    for(let detectionModule of sortedDetectionModules) {
+    messagesAddressed.push(...moduleTaggedMessages.map((m) => m.id));
 
-      console.log(detectionModule.name, detectionModule.mitigationOrder, message.tags, detectionModule.options.tag)
-
-      if(message.tags.includes(detectionModule.options.tag)) {
-        detectionModule.mitigation(message);
-        break;
-      }
+    if (moduleTaggedMessages.length > 0) {
+      detectionModule.mitigation(moduleTaggedMessages, settings);
     }
-    console.log("Module loop was cut short");
   }
 };
 

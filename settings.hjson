@@ -8,6 +8,8 @@
     # will be appended.
     mutedRoleId: "939663446205693953", # replace with your muted role id
 
+    logChannelId: "940497194371387413",
+
     # Mute authors temporarily for 
     # this amount of milliseconds
     muteTime: 120000 # 2 minutes gives a potential bot nearly no chance to finish
@@ -82,7 +84,7 @@
         # containing the same content,
         # they will all be flagged as spam.
 
-        "maxDuplicatesFromAnywhere": 10
+        "maxDuplicatesFromAnywhere": 4
       }
       
     },

@@ -60,8 +60,8 @@ const messagesToTable = (messages) => {
   console.log("");
 };
 /**
- * 
- * @param {Object} message Discord message object 
+ *
+ * @param {Object} message Discord message object
  * @returns Array of links found the in message content
  */
 const getMessageLinks = (message) => {
@@ -69,9 +69,28 @@ const getMessageLinks = (message) => {
 };
 /**
  * 
+ * @param {*} messages Array of discord message objects
+ * @returns Array of unique GuildMember objects from the group of messages
+ */
+const getUniqueMembers = (messages) => {
+  var memberIds = [];
+  var members = [];
+  for (let message of messages) {
+    const { id: authorId } = message.author;
+    if (!memberIds.includes(authorId)) {
+      memberIds.push(authorId);
+      members.push(message.member);
+    }
+  }
+  return members;
+};
+
+/**
+ *
  * @param {Object} message Discord message object
  * @returns Message content with censored links.
  */
+
 const defangMessageLinks = (message) => {
   const messageLinks = getMessageLinks(message);
 
@@ -88,12 +107,11 @@ const defangMessageLinks = (message) => {
   return defangedText;
 };
 /**
- * 
+ *
  * @param {Object} message Discord message object
  * @param {String} tag The tag describing the message content
  */
 const tagMessage = (message, tag) => {
-
   /* Mutate the original message by adding a new tag */
 
   if (!message.tags.includes(tag)) {
@@ -101,8 +119,8 @@ const tagMessage = (message, tag) => {
   }
 };
 /**
- * 
- * @param {Array} messages Discord message objects 
+ *
+ * @param {Array} messages Discord message objects
  * @param {String} tag The tag describing the message content
  */
 const tagMessages = (messages, tag) => {
@@ -113,7 +131,7 @@ const tagMessages = (messages, tag) => {
   });
 };
 /**
- * 
+ *
  * @param {Object} message Discord message object
  * @returns Boolean If the message has an embed
  */
@@ -122,7 +140,7 @@ const messageHasEmbeds = (message) => {
 };
 
 /**
- * 
+ *
  * @param {Object} message Discord message object
  * @returns Number Time in milliseconds that the message has existed
  */
@@ -141,4 +159,5 @@ module.exports = {
   getMessageLinks,
   defangMessageLinks,
   messagesToTable,
+  getUniqueMembers
 };

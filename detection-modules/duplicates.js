@@ -1,9 +1,14 @@
 const {
   getMessageDuplicates,
   getMessageDuplicatesByAuthor,
+  getUniqueMembers,
   tagMessage,
 } = require("../helpers/message-helpers.js");
 const flagMessage = require("../mitigations/flagMessage.js");
+const deleteMessageSilently = require("../mitigations/deleteMessageSilently.js");
+const deleteMessage = require("../mitigations/deleteMessage.js");
+const timeoutMember = require("../mitigations/timeoutMember.js");
+const { tagFormat } = require("../helpers/formatters.js");
 
 /**
  * Module Overview
@@ -94,7 +99,22 @@ module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
   });
 };
 
-module.exports.mitigation = (message) => {
-  console.log("Duplicates mitigation");
-  flagMessage(message);
+module.exports.mitigation = (messages, settings) => {
+  console.log("Duplicates are fun");
+
+  messages.forEach((message, index, arr) => {
+    if (index === 0 && arr.length > 1) {
+      deleteMessage(
+        message,
+        `Automatically removed ${arr.length} duplicate message${
+          arr.length > 1 ? "s" : ""
+        }. Please avoid being repettitive.\n\n${tagFormat(message.tags)}`
+      );
+      return;
+    }
+    deleteMessageSilently(message);
+  });
+  getUniqueMembers(messages).forEach((member) => {
+    timeoutMember(member, settings.mitigations.muteTime);
+  });
 };

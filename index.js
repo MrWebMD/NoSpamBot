@@ -31,9 +31,7 @@ const main = async (client) => {
   const settings = Hjson.parse(settingsFileContent);
 
   const detectionModules = loadModules(settings.modules);
-
-  // console.log("We have loaded these modules: ", detectionModules);
-
+  
   // Set bot status
 
   client.user.setActivity(settings.client.status, { type: "PLAYING" });
@@ -57,6 +55,7 @@ const main = async (client) => {
 };
 
 const messageCreateHandler = (message, client, settings, detectionModules) => {
+
   // Ignore if message was not from a guild
 
   if (!message.guild) return;
@@ -64,6 +63,10 @@ const messageCreateHandler = (message, client, settings, detectionModules) => {
   // Ignore itself
 
   if (message.author.id === client.user.id) return;
+
+  // Anyone who mentions the bot gets a heart
+
+  if(message.mentions.has(client.user.id)) message.react("❤️");
 
   // Ignore whitelisted users
   if (settings.cache.whitelistedUsers.includes(message.author.id)) return;

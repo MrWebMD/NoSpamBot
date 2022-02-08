@@ -1,9 +1,13 @@
 const {
   tagMessage,
   getMessageLinks,
+  getUniqueMembers,
 } = require("../helpers/message-helpers.js");
 const quarantineMessage = require("../mitigations/quarantineMessage.js");
-
+const deleteMessage = require("../mitigations/deleteMessage.js");
+const deleteMessageSilently = require("../mitigations/deleteMessageSilently.js");
+const timeoutMember = require("../mitigations/timeoutMember.js");
+const { tagFormat } = require("../helpers/formatters.js");
 /**
  * Module Overview
  *
@@ -34,7 +38,6 @@ module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
   // be up to?
 
   return messages.map((message) => {
-
     /**
      * Message must have a link to be considered for this
      * module.
@@ -44,8 +47,7 @@ module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
 
     /* Has the duplicate tag */
 
-    if (!message.tags.includes("DUPLICATE"))
-      return message;
+    if (!message.tags.includes("DUPLICATE")) return message;
 
     tagMessage(message, MODULE_TAG);
 
@@ -53,7 +55,30 @@ module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
   });
 };
 
-module.exports.mitigation = (message) => {
-  console.log("Link spray mitigation");
-  quarantineMessage(message, "Potential link spray attack");
-}
+module.exports.mitigation = (messages, settings) => {
+  console.log("Link spray everywhere");
+
+  // for (let message of messages) {
+
+  // }
+  // quarantineMessage(message, "For your safety this message has automatically been removed.", "Potential link spray attack");
+
+  messages.forEach((message, index, arr) => {
+    if (index === 0 && arr.length > 1) {
+      const deleteMessageContent = `Automatically removed ${
+        arr.length
+      } duplicate message${
+        arr.length > 1 ? "s" : ""
+      } because they seem to be spamming links. Do not spam links.\n\n${tagFormat(
+        message.tags
+      )}`;
+
+      deleteMessage(message, deleteMessageContent);
+      return;
+    }
+    deleteMessageSilently(message);
+  });
+  getUniqueMembers(messages).forEach((member) => {
+    timeoutMember(member, settings.mitigations.muteTime);
+  });
+};
