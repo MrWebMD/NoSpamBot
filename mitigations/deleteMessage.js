@@ -11,7 +11,7 @@ module.exports = (message, reason) => {
         .delete()
         .then((message) =>
           console.log(
-            `Deleted quarantined message from ${message.author.username}`
+            `Deleted message from ${message.author.username}`
           )
         )
         .catch(console.log);

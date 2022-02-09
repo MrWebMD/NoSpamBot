@@ -1,9 +1,13 @@
 const {
   tagMessage,
   getMessageLinks,
+  getUniqueMembers,
+  getAuthorTag,
 } = require("../helpers/message-helpers.js");
+
+const { durationFormat, tagFormat } = require("../helpers/formatters.js");
 const deleteMessage = require("../mitigations/deleteMessage.js");
-const quarantineMessage = require("../mitigations/quarantineMessage.js");
+const timeoutMember = require("../mitigations/timeoutMember.js");
 
 /**
  * Module Overview
@@ -56,12 +60,14 @@ module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
 };
 
 module.exports.mitigation = (messages, settings) => {
-
-  console.log("mention me if i'm cool")
   for (let message of messages) {
-    console.log("Mentions everyone with links mitigation");
-    deleteMessage(message, "For your safety this message has automatically been removed by the creator.");
-    // quarantineMessage(message, "For your safety this message has automatically been removed.", "Message embed creator");
+
+    const deleteMessageContent = `For your safety this message has automatically been removed. ${getAuthorTag(message)} has been timed out for ${durationFormat(
+      settings.mitigations.muteTime
+    )}.\n\n${tagFormat(message.tags)}`;
+    deleteMessage(message, deleteMessageContent);
   }
-  // quarantineMessage(message, "Mentions everyone with a link");
+  getUniqueMembers(messages).forEach((member) => {
+    timeoutMember(member, settings.mitigations.muteTime);
+  });
 };

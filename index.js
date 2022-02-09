@@ -1,12 +1,13 @@
 const dotenv = require("dotenv");
 const messageStore = require("./store/messageStore.js");
-const storeLogger = require('./store/storeLogger.js');
+const storeLogger = require("./store/storeLogger.js");
 const cacheActions = require("./store/actions/cacheActions.js");
 const mitigationEngine = require("./mitigations/mitigationEngine.js");
 const readFile = require("./helpers/read-file.js");
 const Hjson = require("hjson");
 const getDiscordClient = require("./discord-client.js");
 const loadModules = require("./loadModules.js");
+const { messageContainsOnlyFile } = require("./helpers/message-helpers.js");
 
 dotenv.config();
 
@@ -31,7 +32,7 @@ const main = async (client) => {
   const settings = Hjson.parse(settingsFileContent);
 
   const detectionModules = loadModules(settings.modules);
-  
+
   // Set bot status
 
   client.user.setActivity(settings.client.status, { type: "PLAYING" });
@@ -46,7 +47,9 @@ const main = async (client) => {
    * mitigation engine, and logging functionality upon change.
    */
 
-  messageStore.subscribe(mitigationEngine.bind(this, messageStore, settings, detectionModules));
+  messageStore.subscribe(
+    mitigationEngine.bind(this, messageStore, settings, detectionModules)
+  );
   // messageStore.subscribe(storeLogger.bind(this, messageStore, settings));
 
   client.on("messageCreate", (message) => {
@@ -66,7 +69,7 @@ const messageCreateHandler = (message, client, settings, detectionModules) => {
 
   // Anyone who mentions the bot gets a heart
 
-  if(message.mentions.has(client.user.id)) message.react("❤️");
+  if (message.mentions.has(client.user.id)) message.react("❤️");
 
   // Ignore whitelisted users
   if (settings.cache.whitelistedUsers.includes(message.author.id)) return;
@@ -78,6 +81,10 @@ const messageCreateHandler = (message, client, settings, detectionModules) => {
   // Ignore messages in whitelisted channels
 
   if (settings.cache.whitelistedChannels.includes(message.channelId)) return;
+
+  // Ignore messages that only contain a file (such as images since they have no text content)
+
+  if(messageContainsOnlyFile(message)) return;
 
   // Ignore message if role is whitelisted
 
@@ -98,7 +105,9 @@ const messageCreateHandler = (message, client, settings, detectionModules) => {
 
   message.tags = [];
 
-  messageStore.dispatch(cacheActions.addMessage(message, settings, detectionModules));
+  messageStore.dispatch(
+    cacheActions.addMessage(message, settings, detectionModules)
+  );
 };
 
 const failedToStartHandler = (error) => {

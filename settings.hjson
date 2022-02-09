@@ -3,12 +3,13 @@
     # The bots discord activity status when online
     "status": "Fighting self bots"
   },
+  "reporting": {
+    logChannelId: "940497194371387413",
+  }
   "mitigations": {
     # When NoSpam decides to mute an author, this role
     # will be appended.
     mutedRoleId: "939663446205693953", # replace with your muted role id
-
-    logChannelId: "940497194371387413",
 
     # Mute authors temporarily for 
     # this amount of milliseconds

@@ -2,12 +2,13 @@ const {
   tagMessage,
   getMessageLinks,
   getUniqueMembers,
+  getAuthorTag,
 } = require("../helpers/message-helpers.js");
-const quarantineMessage = require("../mitigations/quarantineMessage.js");
+
 const deleteMessage = require("../mitigations/deleteMessage.js");
 const deleteMessageSilently = require("../mitigations/deleteMessageSilently.js");
 const timeoutMember = require("../mitigations/timeoutMember.js");
-const { tagFormat } = require("../helpers/formatters.js");
+const { tagFormat, durationFormat, authorListFormat } = require("../helpers/formatters.js");
 /**
  * Module Overview
  *
@@ -56,12 +57,10 @@ module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
 };
 
 module.exports.mitigation = (messages, settings) => {
+
   console.log("Link spray everywhere");
 
-  // for (let message of messages) {
-
-  // }
-  // quarantineMessage(message, "For your safety this message has automatically been removed.", "Potential link spray attack");
+  const membersFromMessages = getUniqueMembers(messages);
 
   messages.forEach((message, index, arr) => {
     if (index === 0 && arr.length > 1) {
@@ -69,16 +68,16 @@ module.exports.mitigation = (messages, settings) => {
         arr.length
       } duplicate message${
         arr.length > 1 ? "s" : ""
-      } because they seem to be spamming links. Do not spam links.\n\n${tagFormat(
-        message.tags
-      )}`;
+      } because they seem to be spamming links. Do not spam links. ${authorListFormat(membersFromMessages)} has been timed out for ${durationFormat(
+        settings.mitigations.muteTime
+      )}.\n\n${tagFormat(message.tags)}`;
 
       deleteMessage(message, deleteMessageContent);
       return;
     }
     deleteMessageSilently(message);
   });
-  getUniqueMembers(messages).forEach((member) => {
+  membersFromMessages.forEach((member) => {
     timeoutMember(member, settings.mitigations.muteTime);
   });
 };

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { defangMessageLinks } = require("../helpers/message-helpers.js");
+const { defangMessageLinks, getAuthorTag } = require("../helpers/message-helpers.js");
 const { codeFormat } = require("../helpers/formatters.js");
 
 module.exports = (message, reason, description) => {
@@ -9,7 +9,7 @@ module.exports = (message, reason, description) => {
 
   const color = "#0099ff";
 
-  const authorTag = `${message.author.username}#${message.author.discriminator}`;
+  const authorTag = getAuthorTag(message);
 
   const iconURL = message.author.avatarURL();
 

@@ -118,6 +118,9 @@ const tagMessage = (message, tag) => {
     message.tags.push(tag);
   }
 };
+const messageContainsOnlyFile = (message) => {
+  return message.content === '' && message.attachments.size !== 0
+}
 /**
  *
  * @param {Array} messages Discord message objects
@@ -139,6 +142,8 @@ const messageHasEmbeds = (message) => {
   return message.embeds.length > 0;
 };
 
+const getAuthorTag = (message) => `${message.author.username}#${message.author.discriminator}`;
+
 /**
  *
  * @param {Object} message Discord message object
@@ -159,5 +164,7 @@ module.exports = {
   getMessageLinks,
   defangMessageLinks,
   messagesToTable,
-  getUniqueMembers
+  getUniqueMembers,
+  messageContainsOnlyFile,
+  getAuthorTag
 };

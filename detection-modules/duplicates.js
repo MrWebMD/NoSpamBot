@@ -3,12 +3,16 @@ const {
   getMessageDuplicatesByAuthor,
   getUniqueMembers,
   tagMessage,
+  getAuthorTag,
 } = require("../helpers/message-helpers.js");
-const flagMessage = require("../mitigations/flagMessage.js");
 const deleteMessageSilently = require("../mitigations/deleteMessageSilently.js");
 const deleteMessage = require("../mitigations/deleteMessage.js");
 const timeoutMember = require("../mitigations/timeoutMember.js");
-const { tagFormat } = require("../helpers/formatters.js");
+const {
+  tagFormat,
+  durationFormat,
+  authorListFormat,
+} = require("../helpers/formatters.js");
 
 /**
  * Module Overview
@@ -102,19 +106,28 @@ module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
 module.exports.mitigation = (messages, settings) => {
   console.log("Duplicates are fun");
 
+  const membersFromMessages = getUniqueMembers(messages);
+
   messages.forEach((message, index, arr) => {
     if (index === 0 && arr.length > 1) {
-      deleteMessage(
-        message,
-        `Automatically removed ${arr.length} duplicate message${
-          arr.length > 1 ? "s" : ""
-        }. Please avoid being repettitive.\n\n${tagFormat(message.tags)}`
-      );
+
+      const deletionMessage = `Automatically removed ${
+        arr.length
+      } duplicate message${
+        arr.length > 1 ? "s" : ""
+      }. Please avoid being repetitive. ${authorListFormat(
+        membersFromMessages
+      )} has been timed out for ${durationFormat(
+        settings.mitigations.muteTime
+      )}.`; // \n\n${tagFormat(message.tags)}
+
+      deleteMessage(message, deletionMessage);
       return;
     }
+
     deleteMessageSilently(message);
   });
-  getUniqueMembers(messages).forEach((member) => {
+  membersFromMessages.forEach((member) => {
     timeoutMember(member, settings.mitigations.muteTime);
   });
 };
