@@ -2,6 +2,13 @@ const { MessageEmbed } = require("discord.js");
 const { defangMessageLinks, getAuthorTag } = require("../helpers/message-helpers.js");
 const { codeFormat } = require("../helpers/formatters.js");
 
+/**
+ * 
+ * @param {Object} message Discord message object 
+ * @param {String} reason Overview of what happened
+ * @param {String} description Why this message was quarantined
+ * @returns {MessageEmbed} Discord MessageEmbed object
+ */
 module.exports = (message, reason, description) => {
   const previewText = defangMessageLinks(message).substr(0, 150) + "...";
 

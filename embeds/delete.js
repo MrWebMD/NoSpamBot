@@ -1,5 +1,11 @@
 const { MessageEmbed } = require("discord.js");
 
+/**
+ * 
+ * @param {Object} message Discord message object 
+ * @param {String} reason Why this message was removed 
+ * @returns {MessageEmbed} Discord MessageEmbed object
+ */
 module.exports = (message, reason) => {
   const color = "#d82a31";
 

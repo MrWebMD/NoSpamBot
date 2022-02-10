@@ -4,7 +4,7 @@
     "status": "Fighting self bots"
   },
   "reporting": {
-    logChannelId: "940497194371387413",
+    logChannelId: "941026890540548166",
   }
   "mitigations": {
     # When NoSpam decides to mute an author, this role

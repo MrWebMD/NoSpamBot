@@ -1,14 +1,20 @@
+const deleteMessageSilently = require("../mitigations/deleteMessageSilently.js");
+const deleteMessage = require("../mitigations/deleteMessage.js");
+const reportIncident = require("../reporting/reportIncident.js");
+const timeoutMember = require("../mitigations/timeoutMember.js");
+
 const {
   tagMessage,
   getMessageLinks,
   getUniqueMembers,
-  getAuthorTag,
+  getUniqueMessagesByAuthor,
 } = require("../helpers/message-helpers.js");
 
-const deleteMessage = require("../mitigations/deleteMessage.js");
-const deleteMessageSilently = require("../mitigations/deleteMessageSilently.js");
-const timeoutMember = require("../mitigations/timeoutMember.js");
-const { tagFormat, durationFormat, authorListFormat } = require("../helpers/formatters.js");
+const {
+  durationFormat,
+  authorListFormat,
+} = require("../helpers/formatters.js");
+
 /**
  * Module Overview
  *
@@ -24,12 +30,10 @@ const { tagFormat, durationFormat, authorListFormat } = require("../helpers/form
 
 /**
  *
- * @param {Array} messages Array of Discord Message Objects
- * @param {Object} settings Settings object as defined in settings.hjson
- * @returns {Array} An array of Discord Message objects. Except,
- * each object has a new property called "tags" (array of strings representing the types of spam)
- *
- * Example of message.tags:  ["DUPLICATE", "LINKSPRAY"]
+ * @param {Array} messages Array of Discord message Objects
+ * @param {Array} previouslyFlaggedMessages Array of Discord Message Objects that have tags from any detection module
+ * @param {Object} moduleOptions Module settings as defined in settings.hjson
+ * @returns {Array} Array of Discord message objects that have a new "tags" property. Tags is an array containing indentifying strings from the detection modules
  */
 
 module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
@@ -56,28 +60,60 @@ module.exports.main = (messages, previouslyFlaggedMessages, moduleOptions) => {
   });
 };
 
-module.exports.mitigation = (messages, settings) => {
-
-  console.log("Link spray everywhere");
+/**
+ *
+ * @param {Array} messages Discord message objects that have been tagged by this module
+ * @param {Object} settings Settings as defined in settings.hjson
+ * @param {Object} client Discord client object
+ */
+module.exports.mitigation = (messages, settings, client) => {
+  const uniqueMessagesByAuthor = getUniqueMessagesByAuthor(messages);
 
   const membersFromMessages = getUniqueMembers(messages);
 
+  // The message content that will show in the embed.
+
+  const deletionMessage = `Automatically removed ${
+    messages.length
+  } duplicate message${
+    messages.length > 1 ? "s" : ""
+  } because they seem to be spamming links. Do not spam links. ${authorListFormat(
+    membersFromMessages
+  )} has been timed out for ${durationFormat(settings.mitigations.muteTime)}.`;
+
+  /**
+   * Delete every message
+   * except for the first message.
+   * The first message will be replied to
+   * using the deletion message.
+   */
+
   messages.forEach((message, index, arr) => {
     if (index === 0 && arr.length > 1) {
-      const deleteMessageContent = `Automatically removed ${
-        arr.length
-      } duplicate message${
-        arr.length > 1 ? "s" : ""
-      } because they seem to be spamming links. Do not spam links. ${authorListFormat(membersFromMessages)} has been timed out for ${durationFormat(
-        settings.mitigations.muteTime
-      )}.\n\n${tagFormat(message.tags)}`;
-
-      deleteMessage(message, deleteMessageContent);
+      deleteMessage(message, deletionMessage);
       return;
     }
     deleteMessageSilently(message);
   });
+
+  /**
+   * Prevent all offending members from sending messages
+   * for a period of time
+   */
+
   membersFromMessages.forEach((member) => {
     timeoutMember(member, settings.mitigations.muteTime);
   });
+
+  /**
+   * Send a copy of the offending messages
+   * and reasons to a log channel.
+   */
+
+  reportIncident(
+    uniqueMessagesByAuthor,
+    client,
+    settings.reporting.logChannelId,
+    deletionMessage
+  );
 };

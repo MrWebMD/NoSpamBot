@@ -1,14 +1,27 @@
-const tempMute = require("./tempMute");
+/**
+ * Get the newly updated flagged messages array from
+ * the store and give the appropriate response
+ */
+/**
+ *
+ * @param {Object} messageStore Redux store object
+ * @param {Object} settings Settings object as defined in settings.hjson
+ * @param {Array} detectionModules A list of the required modules from the detection-modules folder
+ * @param {Object} client Discord client object
+ */
+const mitigationEngine = (messageStore, settings, detectionModules, client) => {
+  // Retrieve all available data from the message cache.
 
-const mitigationEngine = (messageStore, settings, detectionModules) => {
   const messageCache = messageStore.getState();
 
-  /**
-   * Get the newly updated flagged messages array from
-   * the store and give the appropriate response
-   */
-
   var messagesAddressed = [];
+
+  /**
+   * The mitigation engine will execute mitigation efforts
+   * in the order specified. Some modules like "mentionsEveryoneWithLinks"
+   * will usually pick up phishing links from self bots and should
+   * therefore have the highest priorty when actions need to be taken.
+   */
 
   const sortedDetectionModules = detectionModules.sort(
     (module1, module2) => module1.mitigationOrder - module2.mitigationOrder
@@ -23,6 +36,7 @@ const mitigationEngine = (messageStore, settings, detectionModules) => {
    */
 
   for (let detectionModule of sortedDetectionModules) {
+
     var moduleTaggedMessages = messageCache.flaggedMessages.filter(
       (message) =>
         message.tags.includes(detectionModule.options.tag) &&
@@ -32,9 +46,15 @@ const mitigationEngine = (messageStore, settings, detectionModules) => {
 
     messagesAddressed.push(...moduleTaggedMessages.map((m) => m.id));
 
+    /**
+     * If the current detection modules has messages to handle then pass
+     * the messages to it.
+     */
+
     if (moduleTaggedMessages.length > 0) {
-      detectionModule.mitigation(moduleTaggedMessages, settings);
+      detectionModule.mitigation(moduleTaggedMessages, settings, client);
     }
+    
   }
 };
 

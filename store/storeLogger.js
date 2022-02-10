@@ -1,6 +1,17 @@
 const { messagesToTable } = require("../helpers/message-helpers.js");
 
+/**
+ * 
+ * @param {Object} messageStore Redux store object 
+ * @param {Object} settings Settings as defined in settings.hjson
+ */
 module.exports = (messageStore, settings) => {
+
+  /**
+   * Dump everything available in the message cache
+   * as a table into the console
+   */
+  
   const messageCache = messageStore.getState();
 
   const totalMessagesCached =

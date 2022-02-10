@@ -1,6 +1,5 @@
 const dotenv = require("dotenv");
 const messageStore = require("./store/messageStore.js");
-const storeLogger = require("./store/storeLogger.js");
 const cacheActions = require("./store/actions/cacheActions.js");
 const mitigationEngine = require("./mitigations/mitigationEngine.js");
 const readFile = require("./helpers/read-file.js");
@@ -48,7 +47,7 @@ const main = async (client) => {
    */
 
   messageStore.subscribe(
-    mitigationEngine.bind(this, messageStore, settings, detectionModules)
+    mitigationEngine.bind(this, messageStore, settings, detectionModules, client)
   );
   // messageStore.subscribe(storeLogger.bind(this, messageStore, settings));
 
@@ -88,7 +87,7 @@ const messageCreateHandler = (message, client, settings, detectionModules) => {
 
   // Ignore message if role is whitelisted
 
-  for (role of settings.cache.whitelistedRoles) {
+  for (var role of settings.cache.whitelistedRoles) {
     if (message.member.roles.cache.has(role)) {
       return;
     }

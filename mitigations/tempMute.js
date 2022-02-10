@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param {Object} message Discord message object 
+ * @param {Object} settings Settings as defined in settings.hjson
+ */
 const tempMute = (message, settings) => {
 
   const { roles } = message.member;
@@ -25,7 +30,7 @@ const tempMute = (message, settings) => {
 
   setTimeout(() => {
     console.log("Unmuting", message.author.username);
-    unmute(message);
+    unmute();
   }, muteTime)
 
 };
