@@ -2,9 +2,12 @@
   "name": "discord-anti-spam",
   "version": "1.0.0",
   "description": "A discord bot for taking action against spam on discord community servers.",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "doc": "jsdoc -c jsdoc.json",
+    "doc2": "typedoc --out dist/docs .",
+    "start": "cd dist&&node index.js",
+    "dev": "cd dist&&nodemon index.js"
   },
   "author": "Dom#0107 Discord",
   "license": "ISC",
@@ -13,5 +16,13 @@
     "dotenv": "^14.3.2",
     "hjson": "^3.2.2",
     "redux": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/hjson": "^2.4.3",
+    "@types/node": "^17.0.17",
+    "ink-docstrap": "^1.3.2",
+    "jsdoc": "^3.6.10",
+    "ts-node": "^10.5.0",
+    "typedoc": "^0.22.11"
   }
 }
