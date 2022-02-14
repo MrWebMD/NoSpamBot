@@ -13,7 +13,6 @@ const addMessage = (message, settings, detectionModules) => {
     const action = {
         type: "ADD_MESSAGE",
         payload
-        // payload: { cacheMessage, settings, detectionModules },
     };
     return action;
 };

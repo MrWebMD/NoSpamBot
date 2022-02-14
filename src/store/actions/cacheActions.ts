@@ -1,5 +1,5 @@
-import { Message } from "discord.js";
-import { AnyAction, Action } from "redux";
+import Discord from "discord.js";
+import { AnyAction } from "redux";
 import {
   CacheAction,
   CacheMessage,
@@ -16,7 +16,7 @@ import {
  * @returns Redux store action
  */
 const addMessage = (
-  message: Message,
+  message: Discord.Message,
   settings: NoSpamSettings,
   detectionModules: Array<DetectionModule>
 ): AnyAction => {
@@ -27,7 +27,6 @@ const addMessage = (
   const action: AnyAction = {
     type: "ADD_MESSAGE",
     payload
-    // payload: { cacheMessage, settings, detectionModules },
   };
 
   return action;
@@ -37,8 +36,8 @@ const addMessage = (
  *
  * @returns Redux store action
  */
-const flushCache = (): CacheAction => {
-  const action: CacheAction = {
+const flushCache = (): AnyAction => {
+  const action: AnyAction = {
     type: "FLUSH_CACHE",
     payload: {},
   };

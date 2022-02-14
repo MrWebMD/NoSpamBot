@@ -1,4 +1,4 @@
-import { GuildMember, Message } from "discord.js";
+import Discord from "discord.js";
 import { CacheMessage, CacheMessages } from "../types";
 
 /**
@@ -92,7 +92,7 @@ export const messagesToTable = (cacheMessages: CacheMessages): void => {
  * @param message Discord message object
  * @returns Array of links found in the message content
  */
-export const getMessageLinks = (message: Message): Array<string> => {
+export const getMessageLinks = (message: Discord.Message): Array<string> => {
   return message.content.match(/((https?:\/\/)?[^\s.]+\.[\w][^\s]+)/g) || [];
 };
 
@@ -103,10 +103,10 @@ export const getMessageLinks = (message: Message): Array<string> => {
  */
 export const getUniqueMembers = (
   messages: CacheMessages
-): Array<GuildMember> => {
+): Array<Discord.GuildMember> => {
   var memberIds: Array<string> = [];
 
-  var members: Array<GuildMember> = [];
+  var members: Array<Discord.GuildMember> = [];
 
   for (let cacheMessage of messages) {
     const { message } = cacheMessage;
@@ -151,7 +151,7 @@ export const getUniqueMessagesByAuthor = (
  * @returns Message content with censored links.
  */
 
-export const defangMessageLinks = (message: Message): string => {
+export const defangMessageLinks = (message: Discord.Message): string => {
   const messageLinks = getMessageLinks(message);
 
   var defangedText = message.content;
@@ -184,7 +184,7 @@ export const tagMessage = (message: CacheMessage, tag: string): void => {
  * @param message Discord message object
  * @returns Boolean If message contains only an attachment with no content
  */
-export const messageContainsOnlyFile = (message: Message): boolean => {
+export const messageContainsOnlyFile = (message: Discord.Message): boolean => {
   return message.content === "" && message.attachments.size !== 0;
 };
 /**
@@ -204,7 +204,7 @@ export const tagMessages = (messages: CacheMessages, tag: string): void => {
  * @param message Discord message object
  * @returns If the message has an embed
  */
-export const messageHasEmbeds = (message: Message): boolean => {
+export const messageHasEmbeds = (message: Discord.Message): boolean => {
   return message.embeds.length > 0;
 };
 
@@ -213,7 +213,7 @@ export const messageHasEmbeds = (message: Message): boolean => {
  * @param message Discord message object
  * @returns String containing the users tag ex. Dom#0107
  */
-export const getAuthorTag = (message: Message): string =>
+export const getAuthorTag = (message: Discord.Message): string =>
   `${message.author.username}#${message.author.discriminator}`;
 
 /**
@@ -221,6 +221,6 @@ export const getAuthorTag = (message: Message): string =>
  * @param message Discord message object
  * @returns Number Time in milliseconds that the message has existed
  */
-export const getMessageAge = (message: Message): number => {
+export const getMessageAge = (message: Discord.Message): number => {
   return Date.now() - message.createdTimestamp;
 };

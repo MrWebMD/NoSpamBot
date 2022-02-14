@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
+const discord_js_1 = __importDefault(require("discord.js"));
 /**
  * Delete a message from a guild channel and display a message embed
  * @param message Discord message object
@@ -13,7 +16,7 @@ exports.default = (cacheMessage, reason) => {
     const authorTag = `${message.author.username}#${message.author.discriminator}`;
     const iconURL = message.author.avatarURL() || "";
     const thumbnail = "https://i.imgur.com/pJlbnwm.png";
-    const embed = new discord_js_1.MessageEmbed();
+    const embed = new discord_js_1.default.MessageEmbed();
     return embed
         .setColor(color)
         .setAuthor({

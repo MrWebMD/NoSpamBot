@@ -1,4 +1,4 @@
-import { Client } from "discord.js";
+import Discord from "discord.js";
 import { CacheMessages, NoSpamModuleOptions, NoSpamSettings } from "../types";
 
 import deleteMessageSilently from "../mitigations/deleteMessageSilently.js";
@@ -73,7 +73,7 @@ export const main = (
 export const mitigation = (
   messages: CacheMessages,
   settings: NoSpamSettings,
-  client: Client
+  client: Discord.Client
 ): void => {
   const uniqueMessagesByAuthor = getUniqueMessagesByAuthor(messages);
 

@@ -12,7 +12,7 @@ import {
 } from "../helpers/message-helpers.js";
 
 import { durationFormat, authorListFormat } from "../helpers/formatters.js";
-import { Client } from "discord.js";
+import Discord from "discord.js";
 import {
   CacheMessages,
   NoSpamModuleOptions,
@@ -139,7 +139,7 @@ export const main = (
 export const mitigation = (
   messages: CacheMessages,
   settings: NoSpamSettings,
-  client: Client
+  client: Discord.Client
 ): void => {
   const membersFromMessages = getUniqueMembers(messages);
 

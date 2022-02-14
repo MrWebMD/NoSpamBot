@@ -1,5 +1,5 @@
 import { CacheMessages, CacheMessage } from "../types";
-import { EmbedFieldData, MessageEmbed } from "discord.js";
+import Discord from "discord.js";
 import { tagFormat, codeFormat } from "../helpers/formatters";
 import {
   defangMessageLinks,
@@ -37,20 +37,20 @@ import {
 export default (
   messages: CacheMessages,
   incidentDescription: string
-): MessageEmbed => {
+): Discord.MessageEmbed => {
   var title = (messages.length > 1 ? "Combined " : "") + "Incident Report";
 
   const color = "#03326d";
 
   const thumbnail = "https://i.imgur.com/jiecmUR.png";
 
-  var embedFields: Array<EmbedFieldData> = [];
+  var embedFields: Array<Discord.EmbedFieldData> = [];
 
   messages.forEach((cacheMessage) => {
     embedFields.push(...getIncidentFieldsForSingleIncident(cacheMessage));
   });
 
-  return new MessageEmbed()
+  return new Discord.MessageEmbed()
     .setColor(color)
     .setTitle(title)
     .setDescription(incidentDescription)
@@ -73,10 +73,10 @@ export default (
  */
 const getIncidentFieldsForSingleIncident = (
   cacheMessage: CacheMessage
-): Array<EmbedFieldData> => {
+): Array<Discord.EmbedFieldData> => {
   const { message } = cacheMessage;
 
-  var fields: Array<EmbedFieldData> = [];
+  var fields: Array<Discord.EmbedFieldData> = [];
 
   fields.push({
     name: "Author",

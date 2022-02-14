@@ -1,4 +1,4 @@
-import { Message, GuildMember, Client } from "discord.js";
+import Discord from "discord.js";
 
 interface MessageCacheState {
   messages: CacheMessages;
@@ -7,7 +7,7 @@ interface MessageCacheState {
 
 interface CacheMessage {
   tags: string[];
-  message: Message
+  message: Discord.Message
 }
 
 type CacheMessages = Array<CacheMessage>;
@@ -44,7 +44,7 @@ interface DetectionModuleSettings {
 
 interface DetectionModule extends DetectionModuleSettings {
   main(messages: CacheMessages, previouslyFlaggedMessages: CacheMessages, moduleOptions: NoSpamModuleOptions);
-  mitigation(messages: CacheMessages, settings: NoSpamSettings, client: Client): void;
+  mitigation(messages: CacheMessages, settings: NoSpamSettings, client: Discord.Client): void;
 }
 
 interface NoSpamSettings {

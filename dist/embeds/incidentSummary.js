@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
+const discord_js_1 = __importDefault(require("discord.js"));
 const formatters_1 = require("../helpers/formatters");
 const message_helpers_js_1 = require("../helpers/message-helpers.js");
 /**
@@ -38,7 +41,7 @@ exports.default = (messages, incidentDescription) => {
     messages.forEach((cacheMessage) => {
         embedFields.push(...getIncidentFieldsForSingleIncident(cacheMessage));
     });
-    return new discord_js_1.MessageEmbed()
+    return new discord_js_1.default.MessageEmbed()
         .setColor(color)
         .setTitle(title)
         .setDescription(incidentDescription)

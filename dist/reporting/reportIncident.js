@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const incidentSummary_js_1 = __importDefault(require("../embeds/incidentSummary.js"));
 /**
  *
- * @param {Array} messages List of Discord messaage objects
- * @param {Object} client Discord client object
- * @param {String} logChannelId The id of the log channel to send reports to
- * @param {String} incidentDescription What happened during this incident
+ * @param messages List of Discord messaage objects
+ * @param client Discord client object
+ * @param logChannelId The id of the log channel to send reports to
+ * @param incidentDescription What happened during this incident
  */
 exports.default = (messages, client, logChannelId, incidentDescription) => {
     const summaryEmbed = (0, incidentSummary_js_1.default)(messages, incidentDescription);

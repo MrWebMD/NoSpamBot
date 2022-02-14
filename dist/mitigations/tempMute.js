@@ -23,7 +23,7 @@ const tempMute = (message, settings) => {
         console.log("Could not mute user: ", err);
     });
     // Wait the timeout to unmute.
-    // The self bot won't be able to 
+    // The self bot won't be able to
     // send messages in the other channels
     setTimeout(() => {
         console.log("Unmuting", message.author.username);

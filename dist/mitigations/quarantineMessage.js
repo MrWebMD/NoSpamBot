@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const quarantineEmbedCreator = require("../embeds/quarantine");
+const quarantine_1 = __importDefault(require("../embeds/quarantine"));
 /**
  *
  * @param message Discord message object
@@ -10,7 +13,7 @@ const quarantineEmbedCreator = require("../embeds/quarantine");
 module.exports = (cacheMessage, reason, description) => {
     console.log("Quarantine");
     const { message } = cacheMessage;
-    const quarantineEmbed = quarantineEmbedCreator(message, reason, description);
+    const quarantineEmbed = (0, quarantine_1.default)(cacheMessage, reason, description);
     message
         .reply({ embeds: [quarantineEmbed] })
         .then(() => {

@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const message_helpers_js_1 = require("../helpers/message-helpers.js");
 /**
  *
- * @param {Object} messageStore Redux store object
- * @param {Object} settings Settings as defined in settings.hjson
+ * @param messageStore Redux store object
+ * @param settings Settings as defined in settings.hjson
  */
 exports.default = (messageStore, settings) => {
     /**

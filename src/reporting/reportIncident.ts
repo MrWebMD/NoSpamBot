@@ -1,17 +1,17 @@
-import { Client, TextChannel } from "discord.js";
+import Discord from "discord.js";
 import incidentSummaryEmbedCreator from "../embeds/incidentSummary.js";
 import { CacheMessages } from "../types/index.js";
 
 /**
  *
- * @param {Array} messages List of Discord messaage objects
- * @param {Object} client Discord client object
- * @param {String} logChannelId The id of the log channel to send reports to
- * @param {String} incidentDescription What happened during this incident
+ * @param messages List of Discord messaage objects
+ * @param client Discord client object
+ * @param logChannelId The id of the log channel to send reports to
+ * @param incidentDescription What happened during this incident
  */
 export default (
   messages: CacheMessages,
-  client: Client,
+  client: Discord.Client,
   logChannelId: string,
   incidentDescription: string
 ): void => {
@@ -28,7 +28,7 @@ export default (
         return;
       }
 
-      (channel as TextChannel)
+      (channel as Discord.TextChannel)
         .send({ embeds: [summaryEmbed] })
         .catch((err: NodeJS.ErrnoException) => {
           console.log("Could not report incident", err);

@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const discord_js_1 = require("discord.js");
+const discord_js_1 = __importDefault(require("discord.js"));
 const message_helpers_js_1 = require("../helpers/message-helpers.js");
 const formatters_js_1 = require("../helpers/formatters.js");
 /**
@@ -18,7 +21,7 @@ exports.default = (cacheMessage, reason, description) => {
     const authorTag = (0, message_helpers_js_1.getAuthorTag)(message);
     const iconURL = message.author.avatarURL() || "";
     const thumbnail = "https://i.imgur.com/dRI2bdJ_d.webp";
-    return new discord_js_1.MessageEmbed()
+    return new discord_js_1.default.MessageEmbed()
         .setColor(color)
         .setTitle(title)
         .setAuthor({

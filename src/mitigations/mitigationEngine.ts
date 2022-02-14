@@ -1,4 +1,4 @@
-import { Client } from "discord.js";
+import Discord from "discord.js";
 import { Store } from "redux";
 import {
   CacheMessages,
@@ -22,8 +22,8 @@ const mitigationEngine = (
   messageStore: any,
   settings: NoSpamSettings,
   detectionModules: Array<DetectionModule>,
-  client: Client
-) => {
+  client: Discord.Client
+): void => {
   // Retrieve all available data from the message cache.
 
   const messageCache: MessageCacheState = messageStore.getState();

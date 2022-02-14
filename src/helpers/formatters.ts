@@ -1,4 +1,4 @@
-import { GuildMember } from "discord.js";
+import Discord from "discord.js";
 
 /**
  * Create a code block automatically. Wrap strings with backticks.
@@ -20,7 +20,7 @@ export const tagFormat = (tags: Array<string>): string =>
  * @param members A list of guild members
  * @returns List of members to be used in a sentence
  */
-export const authorListFormat = (members: Array<GuildMember>): string => {
+export const authorListFormat = (members: Array<Discord.GuildMember>): string => {
   var combinedList = "";
 
   members.forEach((member, index) => {

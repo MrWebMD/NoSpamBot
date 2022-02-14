@@ -5,8 +5,8 @@ import { messagesToTable } from "../helpers/message-helpers.js";
 
 /**
  * 
- * @param {Object} messageStore Redux store object 
- * @param {Object} settings Settings as defined in settings.hjson
+ * @param messageStore Redux store object 
+ * @param settings Settings as defined in settings.hjson
  */
 export default (messageStore: Store, settings: NoSpamSettings): void => {
 

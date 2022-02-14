@@ -1,6 +1,6 @@
 import { CacheMessage } from "../types";
 
-const quarantineEmbedCreator = require("../embeds/quarantine");
+import quarantineEmbedCreator from "../embeds/quarantine";
 
 /**
  *
@@ -12,12 +12,12 @@ module.exports = (
   cacheMessage: CacheMessage,
   reason: string,
   description: string
-) => {
+): void => {
   console.log("Quarantine");
 
   const { message } = cacheMessage;
 
-  const quarantineEmbed = quarantineEmbedCreator(message, reason, description);
+  const quarantineEmbed = quarantineEmbedCreator(cacheMessage, reason, description);
 
   message
     .reply({ embeds: [quarantineEmbed] })

@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import Discord from "discord.js";
 import {
   defangMessageLinks,
   getAuthorTag,
@@ -17,7 +17,7 @@ export default (
   cacheMessage: CacheMessage,
   reason: string,
   description: string
-): MessageEmbed => {
+): Discord.MessageEmbed => {
 
   const {message} = cacheMessage;
 
@@ -33,7 +33,7 @@ export default (
 
   const thumbnail = "https://i.imgur.com/dRI2bdJ_d.webp";
 
-  return new MessageEmbed()
+  return new Discord.MessageEmbed()
     .setColor(color)
     .setTitle(title)
     .setAuthor({

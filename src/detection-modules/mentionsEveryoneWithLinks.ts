@@ -11,7 +11,7 @@ import deleteMessage from "../mitigations/deleteMessage.js";
 import timeoutMember from "../mitigations/timeoutMember.js";
 import reportIncident from "../reporting/reportIncident.js";
 import { CacheMessages, NoSpamModuleOptions, NoSpamSettings } from "../types/index.js";
-import { Client } from "discord.js";
+import Discord from "discord.js";
 
 /**
  * Module Overview
@@ -75,7 +75,7 @@ export const main = (
 export const mitigation = (
   messages: CacheMessages,
   settings: NoSpamSettings,
-  client: Client
+  client: Discord.Client
 ): void => {
   const uniqueMessagesByAuthor = getUniqueMessagesByAuthor(messages);
 

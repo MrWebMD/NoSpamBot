@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import Discord from "discord.js";
 import { CacheMessage } from "../types";
 
 /**
@@ -7,7 +7,7 @@ import { CacheMessage } from "../types";
  * @param reason Why this message was removed
  * @returns Discord MessageEmbed object
  */
-export default (cacheMessage: CacheMessage, reason: string): MessageEmbed => {
+export default (cacheMessage: CacheMessage, reason: string): Discord.MessageEmbed => {
   const { message } = cacheMessage;
 
   const color = "#d82a31";
@@ -18,7 +18,7 @@ export default (cacheMessage: CacheMessage, reason: string): MessageEmbed => {
 
   const thumbnail = "https://i.imgur.com/pJlbnwm.png";
 
-  const embed = new MessageEmbed();
+  const embed = new Discord.MessageEmbed();
 
   return embed
     .setColor(color)

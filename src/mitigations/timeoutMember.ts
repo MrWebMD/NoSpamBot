@@ -1,4 +1,4 @@
-import { GuildMember } from "discord.js";
+import Discord from "discord.js";
 
 /**
  * Issue a timeout to the guild member for a period of time. They 
@@ -7,7 +7,7 @@ import { GuildMember } from "discord.js";
  * @param time Milliseconds that the member will be timed out for 
  * @param reason Why this member was timed out
  */
-const timeoutMember = (member: GuildMember, time: number, reason: string) => {
+const timeoutMember = (member: Discord.GuildMember, time: number, reason: string) => {
   member
     .timeout(time, reason)
     .then(() => {
