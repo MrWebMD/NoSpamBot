@@ -13,7 +13,7 @@
 
     # Mute authors temporarily for 
     # this amount of milliseconds
-    muteTime: 120000 # 2 minutes gives a potential bot nearly no chance to finish
+    muteTime: 180000 # 3 minutes gives a potential bot nearly no chance to finish
   },
   "cache": {
 
@@ -22,7 +22,7 @@
     # and not considered when looking for spam messages.
     # it is good to keep this time small.
 
-    "maxAge": 60000,
+    "maxAge": 180000,
 
     # List of channel ID's for the anti spam bot to ignore.
     # This is useful for log channels, admin channels,
@@ -76,7 +76,7 @@
       options: {
         tag: "DUPLICATE",
         # Limit of similar messages a user can
-        # send individual per maxAge time before
+        # send individually per maxAge time before
         # all of those messages get marked as spam.
         "maxDuplicatesPerUser": 4,
 
