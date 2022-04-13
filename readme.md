@@ -86,4 +86,4 @@ Any messages that have the tag from the duplicates module that also contains a l
 Used internally to categorized messages by the type of spam. Messages that run through this module carry the "LINKSPRAY" tag by default.
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/)
